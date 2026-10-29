@@ -1,0 +1,231 @@
+:root {
+  --bg: #f7f7f5;
+  --panel: #ffffff;
+  --ink: #1d1f23;
+  --muted: #6b7079;
+  --line: #e2e3e0;
+  --accent: #1f6feb;
+  --sel: #e7efff;
+  --ok: #1a7f37;
+  --warn: #b26a00;
+  --crit: #c4302b;
+  --ok-bg: #e6f4ea;
+  --warn-bg: #fff4dc;
+  --crit-bg: #fde8e7;
+  --code: #f0f0ed;
+  --str: #0b6e4f;
+  --num: #8a3ffc;
+  --key: #6b4c00;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 14px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #15171a;
+    --panel: #1c1f23;
+    --ink: #e4e6e9;
+    --muted: #9198a1;
+    --line: #2d3137;
+    --accent: #6ea8fe;
+    --sel: #23324a;
+    --ok: #4cc06a;
+    --warn: #e0a43c;
+    --crit: #f2716a;
+    --ok-bg: #173323;
+    --warn-bg: #3a2c12;
+    --crit-bg: #3d1c1b;
+    --code: #24282d;
+    --str: #6fd3a6;
+    --num: #c4a3ff;
+    --key: #e6c46e;
+  }
+}
+
+* { box-sizing: border-box; }
+html, body { margin: 0; height: 100%; }
+body { background: var(--bg); color: var(--ink); display: flex; flex-direction: column; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+code, pre, .raw, input { font-family: ui-monospace, "SF Mono", Menlo, Consolas, monospace; }
+
+.top {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+  padding: 8px 16px; border-bottom: 1px solid var(--line); background: var(--panel);
+}
+.brand { font-weight: 600; }
+.source { color: var(--muted); display: flex; gap: 6px; align-items: center; }
+select, input, button {
+  font: inherit; color: var(--ink); background: var(--bg);
+  border: 1px solid var(--line); border-radius: 6px; padding: 4px 8px;
+}
+button { cursor: pointer; }
+.goto { display: flex; gap: 6px; flex: 1; min-width: 240px; }
+.goto input { flex: 1; font-size: 13px; }
+
+.shell { flex: 1; display: flex; min-height: 0; }
+.tree {
+  width: 320px; flex: none; overflow: auto; padding: 8px 4px 24px;
+  border-right: 1px solid var(--line); background: var(--panel); resize: horizontal;
+}
+.main { flex: 1; overflow: auto; padding: 16px 24px 48px; min-width: 0; }
+
+/* Tree */
+.tree ul { list-style: none; margin: 0; padding: 0; }
+.tree .kids { padding-left: 14px; }
+.trow { display: flex; align-items: center; gap: 4px; padding: 1px 4px; border-radius: 4px; white-space: nowrap; }
+.trow.sel { background: var(--sel); }
+.tlabel { color: var(--ink); }
+.caret { border: 0; background: none; padding: 0; width: 16px; color: var(--muted); }
+.caret.leaf { visibility: hidden; }
+.dot { width: 8px; height: 8px; border-radius: 50%; flex: none; background: transparent; }
+.dot.ok { background: var(--ok); }
+.dot.warn { background: var(--warn); }
+.dot.crit { background: var(--crit); }
+
+/* Resource header */
+.crumbs { font-family: ui-monospace, Menlo, monospace; font-size: 13px; color: var(--muted); }
+.crumbs .sep { margin: 0 2px; }
+h1 { font-size: 22px; margin: 10px 0 4px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
+.hstat small { color: var(--muted); font-weight: 400; font-size: 12px; }
+.meta { color: var(--muted); font-size: 13px; }
+.typedoc { color: var(--muted); max-width: 80ch; margin: 6px 0 0; }
+.warning, .error {
+  margin: 10px 0; padding: 8px 12px; border-radius: 6px; max-width: 100ch;
+  background: var(--warn-bg); border: 1px solid var(--warn);
+}
+.error { background: var(--crit-bg); border-color: var(--crit); }
+.warn-text { color: var(--warn); }
+.loading { color: var(--muted); }
+
+.pill { display: inline-block; padding: 1px 8px; border-radius: 999px; font-size: 12px; font-weight: 600; }
+.pill.ok { color: var(--ok); background: var(--ok-bg); }
+.pill.warn { color: var(--warn); background: var(--warn-bg); }
+.pill.crit { color: var(--crit); background: var(--crit-bg); }
+.pill.muted { color: var(--muted); background: var(--code); }
+
+/* Curl panel */
+.curl { margin: 14px 0 0; max-width: 120ch; }
+.curl-cmd { display: flex; gap: 6px; align-items: flex-start; }
+.curl-cmd pre {
+  flex: 1; min-width: 0; margin: 0; padding: 6px 10px; border-radius: 6px;
+  background: var(--code); font-size: 12.5px; white-space: pre-wrap; overflow-wrap: anywhere;
+}
+.curl details { margin-top: 6px; font-size: 13px; }
+.curl summary { cursor: pointer; color: var(--muted); }
+.curl-opts { display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: center; margin-top: 8px; }
+.curl-opts label { display: flex; gap: 6px; align-items: center; color: var(--muted); }
+.curl-opts [hidden] { display: none; }
+.curl-opts input { font-size: 13px; width: 18ch; }
+.curl-opts input[type=number] { width: 7ch; }
+.curl-opts input[type=checkbox] { width: auto; margin: 0; }
+.curl .hint, .curl .note { color: var(--muted); font-size: 12.5px; margin: 6px 0 0; }
+.curl .note { color: var(--warn); }
+.props th .pname { cursor: pointer; }
+.props th .pname:hover { text-decoration: underline dotted; }
+.props th.jqsel .pname { color: var(--accent); }
+
+.tabs { display: flex; gap: 4px; margin: 16px 0 8px; border-bottom: 1px solid var(--line); }
+.tabs button { border: 0; border-bottom: 2px solid transparent; border-radius: 0; background: none; padding: 6px 10px; color: var(--muted); }
+.tabs button.on { color: var(--ink); border-bottom-color: var(--accent); }
+
+/* Property table: one flat table. Nested rows are indented by --depth with
+   a faint guide line per level; rules separate top-level properties only. */
+table.props { border-collapse: collapse; width: 100%; --step: 18px; }
+.props th, .props td { text-align: left; vertical-align: top; padding: 3px 8px; }
+.props tr.group:not(:first-child) > * { border-top: 1px solid var(--line); }
+.props tr.group > * { padding-top: 7px; }
+.props tr.end > * { padding-bottom: 7px; }
+.props th {
+  font-weight: 500; white-space: nowrap; width: 1%;
+  padding-left: calc(var(--depth) * var(--step));
+  background: repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px var(--step))
+    calc(var(--step) / 2) 0 / calc(var(--depth) * var(--step)) 100% no-repeat;
+}
+.props th.noschema { color: var(--muted); font-style: italic; }
+.props th .caret { display: inline-block; text-align: center; margin-right: 2px; }
+.props td.val { width: 40%; overflow-wrap: anywhere; }
+.props td.doc { color: var(--muted); font-size: 12.5px; width: 45%; min-width: 22ch; }
+.summary { color: var(--muted); font-size: 12.5px; }
+.doc .enum { color: var(--ink); margin-top: 2px; }
+.enum.inline { color: var(--muted); font-size: 12.5px; }
+.doc .tags { margin-top: 2px; font-size: 11.5px; opacity: .85; }
+ul.links { margin: 0; padding-left: 16px; }
+.str { color: var(--str); }
+.number, .boolean { color: var(--num); }
+.null { color: var(--muted); }
+.unit { color: var(--muted); }
+.key { color: var(--key); }
+
+pre.raw {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 6px;
+  padding: 12px; font-size: 12.5px; overflow: auto; white-space: pre;
+}
+
+.tree-toggle, .scrim { display: none; }
+
+/* Phones: the page scrolls as a whole, the tree is a drawer behind the
+   header button, and property rows stack so the schema docs stay visible. */
+@media (max-width: 720px) {
+  html, body { height: auto; }
+  body { display: block; }
+  body.drawer-open { overflow: hidden; }
+
+  .top { position: sticky; top: 0; z-index: 10; gap: 8px; padding: 8px 12px; }
+  .tree-toggle { display: inline-flex; align-items: center; justify-content: center; width: 36px; height: 36px; padding: 0; font-size: 18px; }
+  .source { flex: 1; min-width: 0; }
+  .source > span { display: none; }
+  .source select { flex: 1; min-width: 0; width: 100%; }
+  .goto { flex-basis: 100%; min-width: 0; }
+  /* Under 16px, iOS zooms the page when a field gets focus. */
+  select, input, .goto input { font-size: 16px; min-height: 36px; }
+
+  .shell { display: block; }
+  .main { overflow: visible; padding: 12px 16px 40px; }
+
+  .tree {
+    position: fixed; top: 0; bottom: 0; left: 0; z-index: 30;
+    width: min(86vw, 340px); padding: 12px 4px 24px; resize: none;
+    border-right: 1px solid var(--line); box-shadow: 0 0 24px rgb(0 0 0 / .25);
+    transform: translateX(-100%); visibility: hidden; overscroll-behavior: contain;
+    transition: transform .2s ease, visibility .2s;
+  }
+  .drawer-open .tree { transform: none; visibility: visible; }
+  .scrim {
+    display: block; position: fixed; inset: 0; z-index: 20; background: rgb(0 0 0 / .35);
+    opacity: 0; pointer-events: none; transition: opacity .2s;
+  }
+  .drawer-open .scrim { opacity: 1; pointer-events: auto; }
+  .trow { padding: 4px; font-size: 15px; }
+  .caret { width: 28px; height: 28px; }
+  .tree .kids { padding-left: 12px; }
+
+  h1 { font-size: 20px; }
+  .crumbs { overflow-wrap: anywhere; }
+  .meta code { overflow-wrap: anywhere; }
+  .tabs button { padding: 8px 12px; }
+  .curl-opts label { flex-basis: 100%; }
+  .curl-opts input, .curl-opts select { flex: 1; min-width: 0; width: auto; font-size: 16px; }
+  .curl-opts input[type=checkbox] { flex: none; }
+  .curl-cmd pre { font-size: 12px; }
+
+  table.props, .props tbody, .props tr, .props th, .props td { display: block; }
+  table.props { --step: 14px; }
+  .props tr[hidden] { display: none; }
+  .props tr {
+    padding: 4px 0 4px calc(var(--depth) * var(--step));
+    background: repeating-linear-gradient(to right, var(--line) 0 1px, transparent 1px var(--step))
+      calc(var(--step) / 2) 0 / calc(var(--depth) * var(--step)) 100% no-repeat;
+  }
+  .props tr.group { padding-top: 10px; }
+  .props tr.end { padding-bottom: 10px; }
+  .props th, .props td, .props tr > * { padding: 0; border: 0; }
+  .props tr.group:not(:first-child) { border-top: 1px solid var(--line); }
+  .props tr.group:not(:first-child) > *, .props tr.group > *, .props tr.end > * { padding: 0; border: 0; }
+  .props th { width: auto; white-space: normal; overflow-wrap: anywhere; font-weight: 600; background: none; }
+  .props th .caret { width: 20px; height: 20px; }
+  .props td.val { width: auto; min-width: 0; margin: 2px 0 0 22px; }
+  .props td.doc { width: auto; min-width: 0; margin: 4px 0 0 22px; }
+  .props td.val:empty, .props td.doc:empty { display: none; }
+  pre.raw { font-size: 12px; padding: 10px; }
+}

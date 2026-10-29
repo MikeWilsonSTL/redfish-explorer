@@ -1,0 +1,31 @@
+# Redeploy the static site (github.com/MikeWilsonSTL/redfish-explorer-web).
+# That repo's Netlify build clones this repo's main, so a push here only needs
+# to start a build there. The build hook URL is the NETLIFY_BUILD_HOOK secret.
+name: Deploy web
+
+on:
+  push:
+    branches: [main]
+    # The site doesn't include these, so don't rebuild for them.
+    paths-ignore:
+      - "README.md"
+      - "LICENSE"
+      - ".gitignore"
+  workflow_dispatch:
+
+jobs:
+  trigger-netlify:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Trigger Netlify build
+        env:
+          HOOK: ${{ secrets.NETLIFY_BUILD_HOOK }}
+          TITLE: "redfish-explorer ${{ github.sha }}: ${{ github.event.head_commit.message }}"
+        run: |
+          if [ -z "$HOOK" ]; then
+            echo "::error::NETLIFY_BUILD_HOOK secret is not set on this repo"
+            exit 1
+          fi
+          title=$(printf '%s' "$TITLE" | head -n1 | cut -c1-120 | tr -d '\n' | jq -sRr @uri)
+          curl --fail --silent --show-error -X POST -d '{}' "$HOOK?trigger_title=$title"
+          echo "Netlify build triggered"

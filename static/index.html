@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Redfish Explorer</title>
+  <link rel="stylesheet" href="/static/app.css">
+</head>
+<body>
+  <header class="top">
+    <button id="tree-toggle" class="tree-toggle" aria-controls="tree" aria-expanded="false"
+            aria-label="Resource tree">☰</button>
+    <span class="brand">Redfish Explorer</span>
+    <label class="source"><span>Source</span>
+      <select id="source"></select>
+    </label>
+    <form id="goto" class="goto">
+      <input id="goto-path" spellcheck="false" placeholder="/redfish/v1/...">
+      <button>Go</button>
+    </form>
+  </header>
+  <div class="shell">
+    <nav id="tree" class="tree" aria-label="Resource tree"></nav>
+    <div id="scrim" class="scrim"></div>
+    <main id="main" class="main"></main>
+  </div>
+  <script src="/static/schema.js"></script>
+  <script src="/static/app.js"></script>
+</body>
+</html>
