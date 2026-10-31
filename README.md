@@ -1,5 +1,5 @@
 # Redfish Explorer
-<img width="1424" height="764" alt="image" src="https://github.com/user-attachments/assets/11d8503f-9d7e-4f5b-b0d4-3ce4d0dbb837" />
+<img width="1422" height="772" alt="image" src="https://github.com/user-attachments/assets/aa27d08c-ab31-4212-bf55-6e5da484e755" />
 <br>
 I wanted a Redfish visualizer to bolster my study efforts, especially around the
 liquid cooling fields, and I couldn't find a good option, so I made one. It's a
