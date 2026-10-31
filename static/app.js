@@ -445,7 +445,7 @@ function curlPanel(path, isJson) {
   const details = el("details", { open: curl.open || null },
     el("summary", {}, "Request Builder"),
     el("div", { class: "curl-opts" },
-      choose("target", "Send to", [["site", "This site (mock)"], ["bmc", "A real BMC"]]),
+      choose("target", "Send to", [["site", "This site (mock)"], ["bmc", "BMC IP"]]),
       host, insecure),
     el("div", { class: "curl-opts" },
       field("select", "$select", { placeholder: "Status,Name" }),
