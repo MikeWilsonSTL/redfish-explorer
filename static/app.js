@@ -443,7 +443,7 @@ function curlPanel(path, isJson) {
     "Credentials come from $RF_USER and $RF_PASS in your shell, so they stay out of your history.");
 
   const details = el("details", { open: curl.open || null },
-    el("summary", {}, "Build the request"),
+    el("summary", {}, "Request Builder"),
     el("div", { class: "curl-opts" },
       choose("target", "Send to", [["site", "This site (mock)"], ["bmc", "A real BMC"]]),
       host, insecure),
