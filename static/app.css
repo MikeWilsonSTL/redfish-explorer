@@ -69,6 +69,10 @@ button { cursor: pointer; }
   border-right: 1px solid var(--line); background: var(--panel); resize: horizontal;
 }
 .main { flex: 1; overflow: auto; padding: 16px 24px 48px; min-width: 0; }
+.foot {
+  flex: none; padding: 6px 16px; border-top: 1px solid var(--line); background: var(--panel);
+  color: var(--muted); font-size: 12px;
+}
 
 /* Tree */
 .tree ul { list-style: none; margin: 0; padding: 0; }
@@ -182,6 +186,7 @@ pre.raw {
 
   .shell { display: block; }
   .main { overflow: visible; padding: 12px 16px 40px; }
+  .foot { padding: 10px 16px 16px; }
 
   .tree {
     position: fixed; top: 0; bottom: 0; left: 0; z-index: 30;

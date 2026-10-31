@@ -31,9 +31,10 @@ from urllib.parse import unquote, urlsplit
 HERE = Path(__file__).resolve().parent
 STATIC = HERE / "static"
 DMTF = HERE / "vendor" / "Redfish-Publications"
+DMTF_LICENSE_PATH = "/licenses/DMTF-Redfish-Publications.txt"
 SCHEMA_NAME = re.compile(r"^[A-Za-z0-9_.-]+\.json$")
 
-# Missing resources get a Redfish error body, as a BMC would send, so scripts
+# missing resources get a Redfish error body, as a BMC would send, so scripts
 # that parse .error.message work against the mockups too.
 NOT_FOUND_ID = "Base.1.5.ResourceMissingAtURI"
 
@@ -53,7 +54,7 @@ def redfish_not_found(uri: str | None) -> dict:
     return {"error": {"code": NOT_FOUND_ID, "message": info["Message"], "@Message.ExtendedInfo": [info]}}
 
 
-# Mockups that are about liquid cooling sort first in the source picker.
+# mockups that are about liquid cooling sort first in the source picker.
 FEATURED = ("public-cooling-unit", "public-liquid-cooled-server")
 
 
@@ -133,6 +134,10 @@ class Handler(BaseHTTPRequestHandler):
             f = (STATIC / path[len("/static/"):]).resolve()
             if f.is_relative_to(STATIC) and f.is_file():
                 return self.send_file(f)
+        elif path == DMTF_LICENSE_PATH:
+            f = DMTF / "LICENSE.md"
+            if f.is_file():
+                return self.send_body(HTTPStatus.OK, "text/plain; charset=utf-8", f.read_bytes())
         elif path == "/api/sources":
             return self.send_json(HTTPStatus.OK, self.sources())
         elif path.startswith("/schemas/"):
@@ -157,8 +162,8 @@ class Handler(BaseHTTPRequestHandler):
 
     def redfish(self, source, rf_path):
         if source == "live" and self.live:
-            # Pass the query string (e.g. $expand) through to live services.
-            # The mockups are plain files, so they ignore it.
+            # pass the query string (e.g. $expand) through to live services.
+            # the mockups are plain files, so they ignore it.
             query = urlsplit(self.path).query
             status, ctype, body = self.live.get(rf_path + (f"?{query}" if query else ""))
             return self.send_body(status, ctype, body)

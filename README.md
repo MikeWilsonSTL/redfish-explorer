@@ -147,3 +147,22 @@ Other ideas, in no particular order:
 - Session auth (`SessionService`) and `$expand` support for live services.
 - A cooling-loop diagram built from the `CoolingLoop` / `CoolantConnector`
   links.
+
+## License and credits
+
+The explorer's code is licensed under the [GNU AGPL v3](LICENSE).
+
+The mockups and JSON schemas it browses come from DMTF's
+[Redfish-Publications](https://github.com/DMTF/Redfish-Publications),
+Copyright (c) 2014-2025 Contributing Member(s) of Distributed Management Task
+Force, Inc., under the
+[BSD 3-Clause License](https://github.com/DMTF/Redfish-Publications/blob/main/LICENSE.md).
+They aren't in this repository: `scripts/fetch-dmtf.sh` downloads them, with
+that license file, into `vendor/`. The live demo redistributes them unmodified
+and serves DMTF's license at
+[`/licenses/DMTF-Redfish-Publications.txt`](https://redfish.mikewilsonstl.com/licenses/DMTF-Redfish-Publications.txt),
+linked from the page footer; the local server serves it at the same path. The
+schema descriptions in the Properties view are DMTF's text, quoted as-is.
+
+Redfish and DMTF are trademarks of DMTF. This is an independent project, not
+affiliated with or endorsed by DMTF.
