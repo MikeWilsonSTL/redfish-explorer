@@ -54,7 +54,7 @@ def redfish_not_found(uri: str | None) -> dict:
     return {"error": {"code": NOT_FOUND_ID, "message": info["Message"], "@Message.ExtendedInfo": [info]}}
 
 
-# mockups that are about liquid cooling sort first in the source picker.
+# things in this list get bumped to the top of the source picker
 FEATURED = ("public-cooling-unit", "public-liquid-cooled-server")
 
 
