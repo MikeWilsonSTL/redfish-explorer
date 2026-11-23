@@ -5,6 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Redfish Explorer</title>
   <link rel="stylesheet" href="/static/app.css">
+  <script>
+    // Dark is the default. Apply a saved light choice before first paint.
+    try { if (localStorage.getItem("theme") === "light") document.documentElement.dataset.theme = "light"; } catch (e) {}
+  </script>
 </head>
 <body>
   <header class="top">
@@ -18,6 +22,7 @@
       <input id="goto-path" spellcheck="false" placeholder="/redfish/v1/...">
       <button>Go</button>
     </form>
+    <button id="theme-toggle" class="theme-toggle" type="button"></button>
   </header>
   <div class="shell">
     <nav id="tree" class="tree" aria-label="Resource tree"></nav>
@@ -33,5 +38,22 @@
   </footer>
   <script src="/static/schema.js"></script>
   <script src="/static/app.js"></script>
+  <script>
+    // Light/dark toggle. The button shows the mode it switches to.
+    (() => {
+      const root = document.documentElement, btn = document.getElementById("theme-toggle");
+      const label = () => {
+        const light = root.dataset.theme === "light";
+        btn.textContent = light ? "☾" : "☀";
+        btn.title = btn.ariaLabel = light ? "Switch to dark mode" : "Switch to light mode";
+      };
+      btn.addEventListener("click", () => {
+        if (root.dataset.theme === "light") delete root.dataset.theme; else root.dataset.theme = "light";
+        try { localStorage.setItem("theme", root.dataset.theme === "light" ? "light" : "dark"); } catch (e) {}
+        label();
+      });
+      label();
+    })();
+  </script>
 </body>
 </html>

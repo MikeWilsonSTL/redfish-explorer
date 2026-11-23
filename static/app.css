@@ -1,4 +1,31 @@
 :root {
+  /* Dark by default, whatever the OS asks for. The top-bar toggle switches
+     to the light palette below and remembers the choice (index.html). */
+  color-scheme: dark;
+  --bg: #15171a;
+  --panel: #1c1f23;
+  --ink: #e4e6e9;
+  --muted: #9198a1;
+  --faint: #5f656d;
+  --line: #2d3137;
+  --accent: #6ea8fe;
+  --sel: #23324a;
+  --ok: #4cc06a;
+  --warn: #e0a43c;
+  --crit: #f2716a;
+  --ok-bg: #173323;
+  --warn-bg: #3a2c12;
+  --crit-bg: #3d1c1b;
+  --code: #24282d;
+  --str: #6fd3a6;
+  --num: #c4a3ff;
+  --key: #e6c46e;
+  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+  font-size: 14px;
+}
+
+:root[data-theme="light"] {
+  color-scheme: light;
   --bg: #f7f7f5;
   --panel: #ffffff;
   --ink: #1d1f23;
@@ -17,31 +44,6 @@
   --str: #0b6e4f;
   --num: #8a3ffc;
   --key: #6b4c00;
-  font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-  font-size: 14px;
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #15171a;
-    --panel: #1c1f23;
-    --ink: #e4e6e9;
-    --muted: #9198a1;
-    --faint: #5f656d;
-    --line: #2d3137;
-    --accent: #6ea8fe;
-    --sel: #23324a;
-    --ok: #4cc06a;
-    --warn: #e0a43c;
-    --crit: #f2716a;
-    --ok-bg: #173323;
-    --warn-bg: #3a2c12;
-    --crit-bg: #3d1c1b;
-    --code: #24282d;
-    --str: #6fd3a6;
-    --num: #c4a3ff;
-    --key: #e6c46e;
-  }
 }
 
 * { box-sizing: border-box; }
@@ -64,6 +66,7 @@ select, input, button {
 button { cursor: pointer; }
 .goto { display: flex; gap: 6px; flex: 1; min-width: 240px; }
 .goto input { flex: 1; font-size: 13px; }
+.theme-toggle { line-height: 1; padding: 4px 9px; }
 
 .shell { flex: 1; display: flex; min-height: 0; }
 .tree {
@@ -188,6 +191,9 @@ pre.raw {
   .source > span { display: none; }
   .source select { flex: 1; min-width: 0; width: 100%; }
   .goto { flex-basis: 100%; min-width: 0; }
+  /* Toggle stays on the first row, next to the source picker. */
+  .theme-toggle { order: 1; width: 36px; height: 36px; padding: 0; font-size: 16px; }
+  .goto { order: 2; }
   /* Under 16px, iOS zooms the page when a field gets focus. */
   select, input, .goto input { font-size: 16px; min-height: 36px; }
 
